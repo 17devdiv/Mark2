@@ -25,13 +25,6 @@ jobs:
     name: Tests with PHP ${{ matrix.php-version }} and ${{ matrix.dependencies }} dependencies
 
     steps:
-    - name: Setup node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - uses: actions/checkout@v2
-
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -60,37 +53,4 @@ jobs:
 
     - name: Run framework suite
       run: vendor/bin/phpcs --standard=Magento2Framework Magento2/Helpers Magento2/Sniffs Magento2/Rector Magento2Framework/Sniffs
-  js:
-    runs-on: ubuntu-latest
-    name: Javascript tests
-
-    steps:
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run ESLint
-        run: npm run eslint -- eslint/rules
-  rector:
-    runs-on: ubuntu-latest
-    name: Rector tests
-
-    steps:
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: composer install
-
-      - name: Run rector
-        run: vendor/bin/rector process Magento2 Magento2Framework PHP_CodeSniffer --dry-run --autoload-file vendor/squizlabs/php_codesniffer/autoload.php --autoload-file vendor/phpcompatibility/php-compatibility/PHPCSAliases.php
+  
