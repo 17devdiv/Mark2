@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dotsquares" translate="label" sortOrder="1000">
+            <label>Dotsquares</label>
+        </tab>
+        <section id="products" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
+            <class>separator-top</class>
+            <label>Productsinquiry</label>
+            <tab>dotsquares</tab>
+            <resource>Dotsquares_Productsinquiry::products_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0"
+                showInStore="0">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                    showInStore="0">
+                    <label>Module Enable</label>
+                    <comment>If Yes, the extensions will be enable in storefront.</comment>
+                    <source_model>Dotsquares\Productsinquiry\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="send_email_to" translate="label" type="text" sortOrder="2" showInDefault="1"
+                    showInWebsite="0" showInStore="0">
+                    <label>Send Email To</label>
+                    <validate>required-entry validate-email</validate>
+                    <comment>Admin email id to receive email</comment>
+                    <depends>
+                        <field id="products/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="0"
+                    showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Dotsquares\Productsinquiry\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="products/general/enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="email_template" translate="label comment" type="select" sortOrder="4" showInDefault="1"
+                    showInWebsite="0" showInStore="0">
+                    <label>Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Dotsquares\Productsinquiry\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="products/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="select" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0"
+                    showInStore="0">
+                    <label>Select Option</label>
+                    <comment>Display inquiry form in popup or in tab</comment>
+                    <source_model>Dotsquares\Productsinquiry\Model\Config\Source\ListMode</source_model>
+                    <depends>
+                        <field id="products/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="tab_label" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="0"
+                    showInStore="0">
+                    <label>Tab Label</label>
+                    <comment>Open form button label</comment>
+                    <validate>required-entry validate-length maximum-length-50</validate>
+                    <depends>
+                        <field id="products/general/enable">1</field>
+                    </depends>
+                </field>
+
+            </group>
+        </section>
+    </system>
+</config>

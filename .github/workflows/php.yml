@@ -1,14 +1,53 @@
-name: ExtDN M2 Coding Standard
+name: CI
+
 on:
   push:
-    branches:
-      - master
+    branches: [ master, develop ]
   pull_request:
+    branches: [ master, develop ]
 
 jobs:
-  static:
-    name: M2 Coding Standard
+  php:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+        dependencies:
+          - "lowest"
+          - "highest"
+        exclude:
+          - php-version: "8.1"
+            dependencies: "lowest"
+    name: Tests with PHP ${{ matrix.php-version }} and ${{ matrix.dependencies }} dependencies
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: extdn/github-actions-m2/magento-coding-standard@master
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        ini-file: development
+      env:
+        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Validate composer
+      run: composer validate
+
+    - name: Composer install
+      uses: "ramsey/composer-install@v1"
+      with:
+        dependency-versions: "${{ matrix.dependencies }}"
+        composer-options: "${{ matrix.composer-options }}"
+
+    - name: Run unit tests suite
+      run: vendor/bin/phpunit
+
+    - name: Run code style suite
+      run: vendor/bin/phpcs --standard=Magento2 Magento2/Helpers Magento2/Sniffs Magento2/Rector Magento2Framework/Sniffs
+
+    - name: Run framework suite
+      run: vendor/bin/phpcs --standard=Magento2Framework Magento2/Helpers Magento2/Sniffs Magento2/Rector Magento2Framework/Sniffs
+  
