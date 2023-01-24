@@ -1,53 +1,18 @@
-name: CI
+name: Deploy to FTP Server
 
 on:
   push:
-    branches: [ master, develop ]
-  pull_request:
-    branches: [ master, develop ]
+    branches:
+      - master
 
 jobs:
-  php:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - "7.4"
-          - "8.0"
-          - "8.1"
-        dependencies:
-          - "lowest"
-          - "highest"
-        exclude:
-          - php-version: "8.1"
-            dependencies: "lowest"
-    name: Tests with PHP ${{ matrix.php-version }} and ${{ matrix.dependencies }} dependencies
-
     steps:
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
-        php-version: ${{ matrix.php-version }}
-        ini-file: development
-      env:
-        COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Validate composer
-      run: composer validate
-
-    - name: Composer install
-      uses: "ramsey/composer-install@v1"
-      with:
-        dependency-versions: "${{ matrix.dependencies }}" 
-        composer-options: "${{ matrix.composer-options }}"
-
-    - name: Run unit tests suite
-      run: vendor/bin/phpunit
-
-    - name: Run code style suite
-      run: vendor/bin/phpcs --standard=Magento2 Magento2/Helpers Magento2/Sniffs Magento2/Rector Magento2Framework/Sniffs
-
-    - name: Run framework suite
-      run: vendor/bin/phpcs --standard=Magento2Framework Magento2/Helpers Magento2/Sniffs Magento2/Rector Magento2Framework/Sniffs
-  
+        server: 192.168.4.28
+        username: magento2divya
+        password: Xkdx3tgkC977eHG
+        exclude: var,generated,vendor,pub,setup,stats,phpserver,lib,dev,bin
