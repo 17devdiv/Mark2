@@ -15,7 +15,7 @@ jobs:
 
     - name: Print Public IP
       run: |
-        echo ${{ steps.ip.outputs.ipv4 }}
+        echo 192.168.4.28
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
