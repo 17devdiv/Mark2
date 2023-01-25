@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -21,21 +20,21 @@ jobs:
         apt-get update
         apt-get install ftp-upload
         ftp-upload -h 192.168.4.28 -u magento2divya --password Xkdx3tgkC977eHG -d /home/magento2divya/public_html https://github.com/17devdiv/Mark2.git
-        #lftp -u magento2divya,Xkdx3tgkC977eHG -e "mirror -R /home/magento2divya ftp://192.168.4.28/; quit"
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Public IP
-      id: ip
-      uses: haythem/public-ip@v1.3
+  #       lftp -u magento2divya,Xkdx3tgkC977eHG -e "mirror -R /home/magento2divya ftp://192.168.4.28/; quit"
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Public IP
+  #     id: ip
+  #     uses: haythem/public-ip@v1.3
 
-    - name: Print Public IP
-      run: |
-        echo 192.168.4.28
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.2.0
-      with:
-        server: 192.168.4.28
-        username: magento2divya
-        password: Xkdx3tgkC977eHG
-        exclude: var,generated,vendor,pub,setup,stats,phpserver,lib,dev,bin
+  #   - name: Print Public IP
+  #     run: |
+  #       echo 192.168.4.28
+  #   - name: 📂 Sync files
+  #     uses: SamKirkland/FTP-Deploy-Action@4.2.0
+  #     with:
+  #       server: 192.168.4.28
+  #       username: magento2divya
+  #       password: Xkdx3tgkC977eHG
+  #       exclude: var,generated,vendor,pub,setup,stats,phpserver,lib,dev,bin
